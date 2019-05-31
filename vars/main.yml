@@ -1,2 +1,3 @@
 ---
-# vars file for ansible-role-docker-swarm
+docker_gpgkey_server: "https://download.docker.com/linux/ubuntu/gpg"
+docker_gpgkey_id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"

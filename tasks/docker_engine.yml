@@ -1,0 +1,40 @@
+---
+- name: Setup Docker repository to install docker engine on Ubuntu
+  block:
+  - name: Install packages to use a repository over HTTPS
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+      force_apt_get: yes
+    vars:
+      packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+      - aptitude
+  - name: Add Docker GPG key
+    apt_key:
+      url: "{{ docker_gpgkey_server }}"
+      id: "{{ docker_gpgkey_id }}"
+  - name: Add Docker repository
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install docker engine
+  package:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: Start and enable the docker daemon
+  service:
+    name: docker
+    state: started
+    enabled: yes

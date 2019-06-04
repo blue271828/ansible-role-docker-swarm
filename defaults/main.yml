@@ -1,2 +1,2 @@
 ---
-# defaults file for ansible-role-docker-swarm
+docker_enable_cgroup_memory_and_swapaccount: yes

@@ -1,6 +1,7 @@
 ---
 - name: Setup Docker repository to install docker engine on Ubuntu
   block:
+
   - name: Install packages to use a repository over HTTPS
     apt:
       name: "{{ packages }}"
@@ -14,14 +15,35 @@
       - gnupg-agent
       - software-properties-common
       - aptitude
+
   - name: Add Docker GPG key
     apt_key:
       url: "{{ docker_gpgkey_server }}"
       id: "{{ docker_gpgkey_id }}"
+
   - name: Add Docker repository
     apt_repository:
       repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+
+  - name: Enable cgroup memory and swapaccount
+    lineinfile:
+      dest: /etc/default/grub
+      regexp: "GRUB_CMDLINE_LINE="
+      line: "GRUB_CMDLINE_LINE=\"cgroup_enable=memory swapaccount=1\""
+    register: docker_cgroup
+    when: docker_enable_cgroup_memory_and_swapaccount == true
+
+  - name: Update grub
+    command: update-grub2
+    register: docker_kernel
+    when: docker_cgroup is changed
+
+  - name: Reboot server if docker kernel is changed
+    reboot:
+    when: docker_kernel is changed
+
   when: ansible_distribution == "Ubuntu"
+
 
 - name: Install docker engine
   package:

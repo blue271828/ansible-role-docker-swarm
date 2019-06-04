@@ -55,8 +55,16 @@
     - docker-ce-cli
     - containerd.io
 
+- name: Add Docker admin users to the docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  with_items: "{{ docker_admin_users }}"
+
 - name: Start and enable the docker daemon
   service:
     name: docker
     state: started
     enabled: yes
+

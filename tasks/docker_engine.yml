@@ -45,6 +45,10 @@
   when: ansible_distribution == "Ubuntu"
 
 
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
 - name: Install docker engine
   package:
     name: "{{ packages }}"

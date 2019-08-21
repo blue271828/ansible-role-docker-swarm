@@ -28,8 +28,8 @@
   - name: Enable cgroup memory and swapaccount
     lineinfile:
       dest: /etc/default/grub
-      regexp: "GRUB_CMDLINE_LINE="
-      line: "GRUB_CMDLINE_LINE=\"cgroup_enable=memory swapaccount=1\""
+      regexp: "GRUB_CMDLINE_LINUX="
+      line: "GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\""
     register: docker_cgroup
     when: docker_enable_cgroup_memory_and_swapaccount == true
 

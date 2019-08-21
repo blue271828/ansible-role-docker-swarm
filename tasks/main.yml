@@ -1,3 +1,6 @@
 ---
 # Install docker engine
 - include: docker_engine.yml
+
+# Setup docker swarm cluster
+- include: docker_swarm.yml

@@ -1,0 +1,52 @@
+---
+- name: Install dependency packages to install PyPI packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+    force_apt_get: yes
+  vars:
+    packages:
+    - python3-pip
+
+- name: Install Docker SDK for Python
+  pip:
+    name: docker
+
+- name: Open port for swarm cluster
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - "2377"
+    - "7946"
+    - "4789"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Init a new swarm cluster
+  docker_swarm:
+    state: present
+    advertise_addr: "{{ ansible_host }}:2377"
+  when: "inventory_hostname == groups['docker_swarm_manager'][0]"
+
+- name: Get swarm cluster info
+  docker_swarm_info:
+  delegate_to: "{{ groups['docker_swarm_manager'][0] }}"
+  register: docker_swarm_info
+
+- name: Add manager node to swarm cluster
+  docker_swarm:
+    state: join
+    advertise_addr: "{{ ansible_host }}:2377"
+    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}" 
+    join_token: "{{ docker_swarm_info.swarm_facts.JoinTokens.Manager }}"
+  when: "'docker_swarm_manager' in group_names"
+
+- name: Add worker node to swarm cluster
+  docker_swarm:
+    state: join
+    advertise_addr: "{{ ansible_host }}:2377"
+    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}" 
+    join_token: "{{ docker_swarm_info.swarm_facts.JoinTokens.Worker }}"
+  when: "'docker_swarm_worker' in group_names"
+

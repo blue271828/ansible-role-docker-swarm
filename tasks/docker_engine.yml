@@ -31,7 +31,7 @@
       regexp: "GRUB_CMDLINE_LINUX="
       line: "GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\""
     register: docker_cgroup
-    when: docker_enable_cgroup_memory_and_swapaccount == true
+    when: docker_enable_cgroup_memory_and_swapaccount
 
   - name: Update grub
     command: update-grub2

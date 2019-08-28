@@ -38,7 +38,7 @@
   docker_swarm:
     state: join
     advertise_addr: "{{ ansible_host }}:2377"
-    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}" 
+    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}"
     join_token: "{{ docker_swarm_info.swarm_facts.JoinTokens.Manager }}"
   when: "'docker_swarm_manager' in group_names"
 
@@ -46,7 +46,6 @@
   docker_swarm:
     state: join
     advertise_addr: "{{ ansible_host }}:2377"
-    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}" 
+    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}"
     join_token: "{{ docker_swarm_info.swarm_facts.JoinTokens.Worker }}"
   when: "'docker_swarm_worker' in group_names"
-

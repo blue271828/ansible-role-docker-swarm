@@ -24,7 +24,7 @@ Here is a simple example for using this role.
 
     - hosts: servers
       roles:
-         - role: blue271828.docker-swarm
+         - role: blue271828.docker_swarm
 
 
 

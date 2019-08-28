@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: docker-swarm
   author: blue271828
   description: Setup a Docker Swarm Cluster
   issue_tracker_url: https://github.com/blue271828/ansible-role-docker-swarm/issues

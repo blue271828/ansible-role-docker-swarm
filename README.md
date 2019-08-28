@@ -1,6 +1,9 @@
 ansible-role-docker-swarm
 =========
 
+![Ansible Role](https://img.shields.io/ansible/role/42991)
+![Ansible Quality Score](https://img.shields.io/ansible/quality/42991)
+
 Setup a Docker Swarm Cluster
 
 

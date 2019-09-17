@@ -26,7 +26,7 @@
 - name: Init a new swarm cluster
   docker_swarm:
     state: present
-    advertise_addr: "{{ ansible_host }}:2377"
+    advertise_addr: "{{ ansible_default_ipv4.address }}:2377"
   when: "inventory_hostname == groups['docker_swarm_manager'][0]"
 
 - name: Get swarm cluster info
@@ -37,15 +37,15 @@
 - name: Add manager node to swarm cluster
   docker_swarm:
     state: join
-    advertise_addr: "{{ ansible_host }}:2377"
-    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}"
+    advertise_addr: "{{ ansible_default_ipv4.address }}:2377"
+    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_default_ipv4']['address'] }}"
     join_token: "{{ docker_swarm_info.swarm_facts.JoinTokens.Manager }}"
   when: "'docker_swarm_manager' in group_names"
 
 - name: Add worker node to swarm cluster
   docker_swarm:
     state: join
-    advertise_addr: "{{ ansible_host }}:2377"
-    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_host'] }}"
+    advertise_addr: "{{ ansible_default_ipv4.address }}:2377"
+    remote_addrs: "{{ hostvars[groups['docker_swarm_manager'][0]]['ansible_default_ipv4']['address'] }}"
     join_token: "{{ docker_swarm_info.swarm_facts.JoinTokens.Worker }}"
   when: "'docker_swarm_worker' in group_names"

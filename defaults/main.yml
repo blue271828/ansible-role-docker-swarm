@@ -1,2 +1,3 @@
 ---
+docker_admin_users: []
 docker_enable_cgroup_memory_and_swapaccount: yes

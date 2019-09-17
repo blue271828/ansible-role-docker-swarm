@@ -42,7 +42,7 @@ docker_swarm_manager
 docker_swarm_worker
 ```
 
-
+You also need to set `docker_admin_users` if you want non-root users to be able to manage Docker.
 
 License
 -------

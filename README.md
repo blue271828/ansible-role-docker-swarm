@@ -13,7 +13,7 @@ Requirements
 
 - Ansible >=2.8.0
 
-
+If your OS has Python 2 and Python 3 installed, Ansible may default to Python2. This role expects Python 3 so you may need to set `ansible_python_interpreter: /usr/bin/python3`
 
 Example Playbook
 ----------------
